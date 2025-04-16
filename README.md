@@ -132,25 +132,6 @@ MEDIA_ROOT = BASE_DIR / 'your_custom_path'
 MAX_UPLOAD_SIZE = 50 * 1024 * 1024
 ```
 
-## مشارکت
-
-از مشارکت شما استقبال می‌کنیم! برای مشارکت:
-
-1. این مخزن را فورک کنید
-2. یک شاخه جدید برای ویژگی خود ایجاد کنید (`git checkout -b feature/amazing-feature`)
-3. تغییرات خود را کامیت کنید (`git commit -m 'Add some amazing feature'`)
-4. به شاخه خود پوش کنید (`git push origin feature/amazing-feature`)
-5. یک درخواست ادغام ارسال کنید
-
-## مجوز
-
-این پروژه تحت مجوز MIT منتشر شده است - برای جزئیات بیشتر، فایل LICENSE را مشاهده کنید.
-
-## تماس
-
-برای سوالات یا پیشنهادات، با ما از طریق ایمیل example@example.com تماس بگیرید.
-
----
 
 <p align="center">
   با ❤️ در ایران توسعه یافته است
