@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}آپلودر فایل{% endblock %}</title>
+    <!-- Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Vazir Font -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        'vazir': ['Vazir', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+        }
+        /* Fix for RTL layout with FontAwesome icons */
+        .fa, .fas, .far, .fab {
+            margin-left: 0.5rem;
+            margin-right: 0;
+        }
+        /* RTL specific fixes */
+        .ml-3 {
+            margin-right: 0.75rem;
+            margin-left: 0;
+        }
+        .mr-2, .mr-3, .mr-4 {
+            margin-left: 0.5rem;
+            margin-right: 0;
+        }
+        .ml-1, .ml-2 {
+            margin-right: 0.25rem;
+            margin-left: 0;
+        }
+        .mr-1 {
+            margin-left: 0.25rem;
+            margin-right: 0;
+        }
+        /* Reverse flex directions for RTL */
+        .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+        .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+        .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-vazir">
+    <nav class="bg-gradient-to-r from-primary-900 to-primary-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a class="text-2xl font-bold flex items-center" href="{% url 'home' %}">
+                    <i class="fas fa-cloud-upload-alt ml-2"></i>
+                    آپلودر فایل
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a class="hover:text-primary-200 transition-colors py-2" href="{% url 'file-upload' %}">
+                        <i class="fas fa-upload ml-1"></i> آپلود
+                    </a>
+                    <a class="hover:text-primary-200 transition-colors py-2" href="{% url 'file-list' %}">
+                        <i class="fas fa-file-alt ml-1"></i> فایل‌ها
+                    </a>
+                    <a class="hover:text-primary-200 transition-colors py-2" href="{% url 'home' %}">
+                        <i class="fas fa-home ml-1"></i> خانه
+                    </a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="md:hidden hidden pt-4 pb-2">
+                <a class="block py-2 hover:text-primary-200 transition-colors" href="{% url 'home' %}">
+                    <i class="fas fa-home ml-1"></i> خانه
+                </a>
+                <a class="block py-2 hover:text-primary-200 transition-colors" href="{% url 'file-list' %}">
+                    <i class="fas fa-file-alt ml-1"></i> فایل‌ها
+                </a>
+                <a class="block py-2 hover:text-primary-200 transition-colors" href="{% url 'file-upload' %}">
+                    <i class="fas fa-upload ml-1"></i> آپلود
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>آپلودر فایل &copy; {% now "Y" %}</p>
+            <p class="text-gray-400 text-sm mt-2">راهی سریع و ایمن برای مدیریت فایل‌های شما</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html> 

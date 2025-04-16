@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %}خانه - آپلودر فایل{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto text-center">
+    <div class="mb-12 py-10">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800">
+                آپلودر فایل هوشمند
+            </span>
+        </h1>
+        <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            آپلود، ذخیره و مدیریت فایل‌های خود را به راحتی انجام دهید. از آپلودر زیبای ما برای نگهداری تمام اسناد مهم خود استفاده کنید.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'file-upload' %}" class="px-6 py-3 bg-primary-600 text-white font-medium rounded-lg shadow-md hover:bg-primary-700 transition-colors duration-300 flex items-center justify-center">
+                <i class="fas fa-cloud-upload-alt ml-2"></i> آپلود فایل
+            </a>
+            <a href="{% url 'file-list' %}" class="px-6 py-3 bg-white text-primary-700 font-medium rounded-lg shadow-md border border-primary-300 hover:bg-gray-50 transition-colors duration-300 flex items-center justify-center">
+                <i class="fas fa-file-alt ml-2"></i> مشاهده فایل‌ها
+            </a>
+        </div>
+    </div>
+
+    <!-- Features section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div class="text-primary-500 mb-4">
+                <i class="fas fa-tachometer-alt text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">آپلود سریع</h3>
+            <p class="text-gray-600">فایل‌های خود را با سیستم آپلود بهینه‌شده ما به سرعت آپلود کنید و پیشرفت آن را در زمان واقعی مشاهده کنید.</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div class="text-primary-500 mb-4">
+                <i class="fas fa-shield-alt text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">ذخیره‌سازی امن</h3>
+            <p class="text-gray-600">فایل‌های شما به صورت امن ذخیره می‌شوند و فقط برای شما قابل دسترسی هستند. ما به حریم خصوصی داده‌های شما اهمیت می‌دهیم.</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div class="text-primary-500 mb-4">
+                <i class="fas fa-mobile-alt text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2 text-gray-800">سازگار با موبایل</h3>
+            <p class="text-gray-600">با طراحی واکنش‌گرای ما که در همه جا کار می‌کند، از هر دستگاهی به فایل‌های خود دسترسی داشته باشید و آنها را مدیریت کنید.</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

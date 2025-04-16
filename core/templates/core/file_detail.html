@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ object.title }} - آپلودر فایل{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="{% url 'file-list' %}" class="text-primary-600 hover:text-primary-800 flex items-center">
+            <i class="fas fa-arrow-right ml-2"></i> بازگشت به فایل‌ها
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-6 py-4 text-white">
+            <h2 class="text-2xl font-bold">{{ object.title }}</h2>
+        </div>
+        
+        <div class="p-6">
+            <div class="flex flex-col md:flex-row md:items-center mb-6 pb-6 border-b border-gray-200">
+                <div class="flex-grow">
+                    <div class="flex items-center mb-4">
+                        <div class="text-4xl text-primary-500 ml-4">
+                            {% if object.file.url|slice:"-3:" == "pdf" %}
+                                <i class="fas fa-file-pdf"></i>
+                            {% elif object.file.url|slice:"-3:" == "doc" or object.file.url|slice:"-4:" == "docx" %}
+                                <i class="fas fa-file-word"></i>
+                            {% elif object.file.url|slice:"-3:" == "xls" or object.file.url|slice:"-4:" == "xlsx" %}
+                                <i class="fas fa-file-excel"></i>
+                            {% elif object.file.url|slice:"-3:" == "jpg" or object.file.url|slice:"-3:" == "png" or object.file.url|slice:"-4:" == "jpeg" %}
+                                <i class="fas fa-file-image"></i>
+                            {% else %}
+                                <i class="fas fa-file"></i>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">اطلاعات فایل</h3>
+                            <p class="text-sm text-gray-500">آپلود شده در {{ object.upload_date|date:"F d, Y" }} ساعت {{ object.upload_date|time:"g:i A" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
+                    <a href="{{ object.file.url }}" class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 shadow-sm" download>
+                        <i class="fas fa-download ml-2"></i> دانلود فایل
+                    </a>
+                    <button id="copy-link-btn" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm" data-url="{{ request.scheme }}://{{ request.get_host }}{{ object.file.url }}">
+                        <i class="fas fa-copy ml-2"></i> کپی لینک
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="text-md font-semibold text-gray-900 mb-2">توضیحات</h4>
+                <div class="bg-gray-50 rounded-md p-4 text-gray-700">
+                    {% if object.description %}
+                        {{ object.description|linebreaks }}
+                    {% else %}
+                        <p class="text-gray-500 italic">توضیحاتی ارائه نشده است</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h4 class="text-md font-semibold text-gray-900 mb-2">جزئیات فایل</h4>
+                <div class="bg-gray-50 rounded-md p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-500">نام فایل</p>
+                            <p class="text-gray-900">
+                                {% with filename=object.file.name %}
+                                    {{ filename|slice:"8:" }}
+                                {% endwith %}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">مسیر فایل</p>
+                            <p class="text-gray-900 break-all">{{ object.file.path }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-between pt-4 border-t border-gray-200">
+                <a href="{% url 'file-list' %}" class="text-gray-600 hover:text-gray-900 font-medium flex items-center">
+                    <i class="fas fa-list ml-2"></i> لیست فایل‌ها
+                </a>
+                <a href="{% url 'file-delete' object.id %}" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <i class="fas fa-trash-alt ml-2"></i> حذف فایل
+                </a>
+            </div>
+            
+            <!-- Toast notification for copy success -->
+            <div id="copy-toast" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-green-600 text-white rounded-lg shadow-lg opacity-0 transition-opacity duration-300 flex items-center">
+                <i class="fas fa-check ml-2"></i>
+                <span>لینک دانلود با موفقیت کپی شد!</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyLinkBtn = document.getElementById('copy-link-btn');
+        const copyToast = document.getElementById('copy-toast');
+        
+        copyLinkBtn.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            
+            // Create a temporary textarea element to copy the text
+            const textarea = document.createElement('textarea');
+            textarea.value = url;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            
+            // Select and copy the text
+            textarea.select();
+            document.execCommand('copy');
+            
+            // Remove the textarea
+            document.body.removeChild(textarea);
+            
+            // Show the toast notification
+            copyToast.classList.replace('opacity-0', 'opacity-100');
+            
+            // Hide the toast after 3 seconds
+            setTimeout(function() {
+                copyToast.classList.replace('opacity-100', 'opacity-0');
+            }, 3000);
+        });
+    });
+</script>
+{% endblock %} 
