@@ -28,7 +28,7 @@
 
 1. **کلون کردن مخزن**
    ```
-   [git clone https://your-repository-url.git](https://github.com/mehrshad2020/FileHub-Persian.git)
+   git clon https://github.com/mehrshad2020/FileHub-Persian.git
    cd django_uploader
    ```
 
